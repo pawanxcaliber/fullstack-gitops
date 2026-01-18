@@ -17,6 +17,7 @@ spec:
       - name: backend
         # 👇 This URL comes from your GitLab Registry (Check the UI to confirm)
         image: registry.gitlab.com/pawanmkolachippu/fullstack-gitops/backend:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:
