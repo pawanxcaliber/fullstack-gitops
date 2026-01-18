@@ -1,5 +1,5 @@
 # Full Stack GitOps Architecture: From Code to Cluster
-
+## Gitlab repo : https://gitlab.com/pawanmkolachippu/fullstack-gitops
 ## 1. High-Level Architectural Design
 This project implements a **Hybrid GitOps Architecture** using two physical machines and a cloud intermediary. The goal is to create a "Zero-Trust" deployment where the Production Server (Dep System) pulls changes securely, rather than allowing external push access.
 
