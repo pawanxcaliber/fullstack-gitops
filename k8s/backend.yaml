@@ -19,6 +19,15 @@ spec:
         image: registry.gitlab.com/pawanmkolachippu/fullstack-gitops/backend:v1
         ports:
         - containerPort: 5000
+        env:
+        - name: POSTGRES_USER
+          value: "pawan"
+        - name: POSTGRES_PASSWORD
+          value: "devops123"
+        - name: POSTGRES_DB
+          value: "gitops_db"
+        - name: POSTGRES_HOST
+          value: "postgres"  # This matches the Service Name of the DB
 ---
 apiVersion: v1
 kind: Service
