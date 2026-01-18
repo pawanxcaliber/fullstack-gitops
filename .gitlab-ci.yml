@@ -1,0 +1,25 @@
+stages:
+  - build
+
+variables:
+  # This tells Docker to verify the registry is secure
+  DOCKER_DRIVER: overlay2
+
+build-and-push:
+  stage: build
+  tags:
+    # This must match if you used tags, but you checked "Run untagged" so this is optional.
+    # We leave it empty or remove it if untagged.
+  script:
+    - echo "🏗️ Logging into GitLab Container Registry..."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    
+    - echo "📦 Building Frontend Image..."
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:v1 ./frontend
+    - docker push $CI_REGISTRY_IMAGE/frontend:v1
+    
+    - echo "📦 Building Backend Image..."
+    - docker build -t $CI_REGISTRY_IMAGE/backend:v1 ./backend
+    - docker push $CI_REGISTRY_IMAGE/backend:v1
+    
+    - echo "✅ Build Complete!"
