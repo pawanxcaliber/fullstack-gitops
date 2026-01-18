@@ -2,14 +2,11 @@ stages:
   - build
 
 variables:
-  # This tells Docker to verify the registry is secure
   DOCKER_DRIVER: overlay2
 
 build-and-push:
   stage: build
-  tags:
-    # This must match if you used tags, but you checked "Run untagged" so this is optional.
-    # We leave it empty or remove it if untagged.
+  # REMOVED the 'tags' section completely to fix the syntax error
   script:
     - echo "🏗️ Logging into GitLab Container Registry..."
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
