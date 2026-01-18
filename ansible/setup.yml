@@ -1,0 +1,42 @@
+---
+- name: Rebuild Infrastructure
+  hosts: master
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install K3s (Master Node)
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for K3s to start
+      pause:
+        seconds: 15
+
+    - name: Copy Kubeconfig to User Home
+      shell: |
+        mkdir -p /home/pawan/.kube
+        cp /etc/rancher/k3s/k3s.yaml /home/pawan/.kube/config
+        chown pawan:pawan /home/pawan/.kube/config
+        chmod 600 /home/pawan/.kube/config
+
+    - name: Fix DNS (Point to Google to avoid timeouts)
+      lineinfile:
+        path: /etc/resolv.conf
+        line: "nameserver 8.8.8.8"
+        state: present
+
+    # 👇 This automates the "Taint Removal" step we did manually
+    - name: Remove Master Node Taint
+      command: kubectl taint nodes --all node-role.kubernetes.io/master-
+      ignore_errors: yes
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml

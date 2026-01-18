@@ -1,0 +1,25 @@
+---
+- name: Nuke the Server
+  hosts: master
+  become: yes
+  tasks:
+    - name: Uninstall K3s
+      command: /usr/local/bin/k3s-uninstall.sh
+      ignore_errors: yes
+
+    - name: Remove Docker & Dependencies
+      apt:
+        name: ['docker', 'docker-engine', 'docker.io', 'containerd', 'runc']
+        state: absent
+        purge: yes
+
+    - name: Cleanup Directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/docker
+        - /var/lib/rancher
+        - /etc/rancher
+        - /home/pawan/.kube
+        - /home/pawan/gitlab-runner  # Optional: Clean runner configs
