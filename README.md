@@ -78,6 +78,8 @@ ArgoCD lives inside the cluster. It constantly compares the "Desired State" (Git
 `[ArgoCD Pod] <--- watches --- [GitLab Repo (k8s folder)]`
 `[ArgoCD Pod] ---> applies ---> [Kubernetes API]`
 
+![alt text](image.png)
+![alt text](<Screenshot from 2026-01-18 16-11-00.png>)
 **Installation Commands (On Dep System):**
 ```bash
 # 1. Create Namespace
